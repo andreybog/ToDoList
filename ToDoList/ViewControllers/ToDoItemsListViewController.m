@@ -39,17 +39,6 @@
 
 #pragma mark - Actions
 
-- (void) addItemWithTitle:(NSString *) title summary:(NSString *) summary
-                 priority:(ToDoItemPriority) priority toItemsStore:(ToDoItemsStore *) itemsStore {
-    
-    ToDoItem *item = [[ToDoItem alloc] init];
-    item.title = title;
-    item.summary = summary;
-    item.priority = priority;
-    
-    [itemsStore addItem:item];
-}
-
 - (IBAction)actionDidTouchAddButton:(UIButton *)sender {
     
     NSString *title = [self.titleTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
@@ -150,11 +139,18 @@
     }
 }
 
-- (nullable NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return @"Delete";
-}
-
 #pragma mark - Help functions
+
+- (void) addItemWithTitle:(NSString *) title summary:(NSString *) summary
+                 priority:(ToDoItemPriority) priority toItemsStore:(ToDoItemsStore *) itemsStore {
+    
+    ToDoItem *item = [[ToDoItem alloc] init];
+    item.title = title;
+    item.summary = summary;
+    item.priority = priority;
+    
+    [itemsStore addItem:item];
+}
 
 - (void) configureButton:(UIButton *) button asEnabled:(BOOL) enabled {
     
