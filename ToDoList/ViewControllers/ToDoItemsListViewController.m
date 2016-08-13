@@ -144,6 +144,7 @@
     
     [self.itemsStore removeItem:item];
     [self.itemsStore insertItem:item atIndex:newIndexPath.row];
+    // some comments
 }
 
 #pragma mark - Help functions
