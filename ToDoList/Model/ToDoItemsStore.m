@@ -29,6 +29,10 @@
     [_items addObject:item];
 }
 
+- (void) insertItem:(ToDoItem *)item atIndex:(NSInteger)index {
+    [_items insertObject:item atIndex:index];
+}
+
 - (void) removeItem:(ToDoItem *) item {
     [_items removeObject:item];
 }
@@ -36,7 +40,6 @@
 - (NSArray <ToDoItem*> *) items {
     return [NSArray arrayWithArray:_items];
 }
-
 
 - (NSUInteger) itemsCount {
     return [_items count];

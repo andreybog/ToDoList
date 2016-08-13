@@ -14,6 +14,7 @@
 @protocol ToDoItemStoreProtocol <NSObject>
 
 - (void) addItem:(ToDoItem *) item;
+- (void) insertItem:(ToDoItem *) item atIndex:(NSInteger) index;
 - (void) removeItem:(ToDoItem *) item;
 - (NSArray <ToDoItem*> *) items;
 - (NSUInteger) itemsCount;

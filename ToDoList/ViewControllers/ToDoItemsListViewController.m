@@ -124,19 +124,26 @@
     
     item.done = !item.isDone;
     
-    UITableViewRowAnimation rowAnimation = item.isDone ? UITableViewRowAnimationNone : UITableViewRowAnimationAutomatic;
+    UITableViewRowAnimation rowAnimation = UITableViewRowAnimationNone;
+    NSIndexPath *newIndexPath = nil;
     
     [tableView reloadRowsAtIndexPaths: @[ indexPath ] withRowAnimation:rowAnimation];
     
     if ( item.isDone ) {
         
-        NSIndexPath *newIndexPath = [NSIndexPath indexPathForRow:[self.itemsStore itemsCount]-1 inSection:0];
-
-        [tableView moveRowAtIndexPath:indexPath toIndexPath:newIndexPath];
+        newIndexPath = [NSIndexPath indexPathForRow:[self.itemsStore itemsCount]-1 inSection:0];
+        rowAnimation = UITableViewRowAnimationNone;
         
-        [self.itemsStore removeItem:item];
-        [self.itemsStore addItem:item];
+    } else {
+        
+        rowAnimation = UITableViewRowAnimationAutomatic;
+        newIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
     }
+    
+    [tableView moveRowAtIndexPath:indexPath toIndexPath:newIndexPath];
+    
+    [self.itemsStore removeItem:item];
+    [self.itemsStore insertItem:item atIndex:newIndexPath.row];
 }
 
 #pragma mark - Help functions
