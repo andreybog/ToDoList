@@ -106,6 +106,84 @@
                                         </mask>
                                     </variation>
                                 </view>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ABSwipeableCell" id="QG8-XQ-dtU" customClass="ABSwipeableCell">
+                                        <rect key="frame" x="0.0" y="130.5" width="600" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="QG8-XQ-dtU" id="NkW-Ds-QCp">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WNl-4b-MhI">
+                                                    <rect key="frame" x="440" y="-1" width="80" height="45.5"/>
+                                                    <color key="backgroundColor" red="0.0" green="0.68207319630872487" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <state key="normal" title="Done">
+                                                        <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    </state>
+                                                    <connections>
+                                                        <action selector="actionButtonClicked:" destination="QG8-XQ-dtU" eventType="touchUpInside" id="TIq-R3-gT7"/>
+                                                    </connections>
+                                                </button>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2KL-En-nIU">
+                                                    <rect key="frame" x="520" y="0.0" width="80" height="45"/>
+                                                    <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="80" id="8sJ-74-J8a"/>
+                                                    </constraints>
+                                                    <state key="normal" title="Delete">
+                                                        <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    </state>
+                                                    <connections>
+                                                        <action selector="actionButtonClicked:" destination="QG8-XQ-dtU" eventType="touchUpInside" id="cD1-zP-4h2"/>
+                                                    </connections>
+                                                </button>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="p5M-QA-4Fj">
+                                                    <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XT7-TW-PPz">
+                                                            <rect key="frame" x="20" y="11" width="42" height="21"/>
+                                                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
+                                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                    </subviews>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <constraints>
+                                                        <constraint firstItem="XT7-TW-PPz" firstAttribute="leading" secondItem="p5M-QA-4Fj" secondAttribute="leading" constant="20" id="kzd-dz-X2T"/>
+                                                        <constraint firstItem="XT7-TW-PPz" firstAttribute="centerY" secondItem="p5M-QA-4Fj" secondAttribute="centerY" id="sax-5o-8dx"/>
+                                                    </constraints>
+                                                </view>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="bottom" secondItem="p5M-QA-4Fj" secondAttribute="bottom" id="0Y2-5R-MCm"/>
+                                                <constraint firstItem="p5M-QA-4Fj" firstAttribute="leading" secondItem="NkW-Ds-QCp" secondAttribute="leading" id="AB8-Oz-dV0"/>
+                                                <constraint firstItem="2KL-En-nIU" firstAttribute="height" secondItem="WNl-4b-MhI" secondAttribute="height" id="Boc-3f-cgq"/>
+                                                <constraint firstAttribute="trailing" secondItem="p5M-QA-4Fj" secondAttribute="trailing" id="K2V-6n-9zz"/>
+                                                <constraint firstItem="2KL-En-nIU" firstAttribute="leading" secondItem="WNl-4b-MhI" secondAttribute="trailing" id="VbP-vG-1mV"/>
+                                                <constraint firstItem="2KL-En-nIU" firstAttribute="bottom" secondItem="WNl-4b-MhI" secondAttribute="bottom" id="Z25-AN-9yY"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="2KL-En-nIU" secondAttribute="trailing" constant="-8" id="a5y-FK-qUE"/>
+                                                <constraint firstItem="p5M-QA-4Fj" firstAttribute="top" secondItem="NkW-Ds-QCp" secondAttribute="top" id="gXf-Ow-QaQ"/>
+                                                <constraint firstItem="WNl-4b-MhI" firstAttribute="centerY" secondItem="NkW-Ds-QCp" secondAttribute="centerY" id="nUW-7B-ols"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="2KL-En-nIU" secondAttribute="bottom" constant="-9.5" id="nnC-7o-qDu"/>
+                                                <constraint firstItem="2KL-En-nIU" firstAttribute="top" secondItem="NkW-Ds-QCp" secondAttribute="topMargin" constant="-8" id="r5L-Vm-qhc"/>
+                                                <constraint firstItem="2KL-En-nIU" firstAttribute="width" secondItem="WNl-4b-MhI" secondAttribute="width" id="wgJ-bB-i9o"/>
+                                            </constraints>
+                                            <variation key="default">
+                                                <mask key="constraints">
+                                                    <exclude reference="nUW-7B-ols"/>
+                                                </mask>
+                                            </variation>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="button1" destination="2KL-En-nIU" id="czB-eu-YBE"/>
+                                            <outlet property="button2" destination="WNl-4b-MhI" id="1cc-gV-MHl"/>
+                                            <outlet property="contentViewLeftConstraint" destination="AB8-Oz-dV0" id="KLR-sj-Qfs"/>
+                                            <outlet property="contentViewRightConstraint" destination="K2V-6n-9zz" id="vp6-On-91p"/>
+                                            <outlet property="myContentView" destination="p5M-QA-4Fj" id="z48-kl-XUw"/>
+                                            <outlet property="myTextLabel" destination="XT7-TW-PPz" id="pen-t8-VF7"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
                                 <connections>
                                     <outlet property="dataSource" destination="BYZ-38-t0r" id="Iec-Hr-7Pb"/>
                                     <outlet property="delegate" destination="BYZ-38-t0r" id="7UF-U1-kgJ"/>

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		556959B21D608377001CDCDB /* ABSwipeableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 556959B11D608377001CDCDB /* ABSwipeableCell.m */; };
 		6E5A9A8B1D5B908E006E0E3C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E5A9A8A1D5B908E006E0E3C /* main.m */; };
 		6E5A9A8E1D5B908E006E0E3C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E5A9A8D1D5B908E006E0E3C /* AppDelegate.m */; };
 		6E5A9A911D5B908E006E0E3C /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E5A9A901D5B908E006E0E3C /* ViewController.m */; };
@@ -19,6 +20,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		556959B01D608377001CDCDB /* ABSwipeableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABSwipeableCell.h; sourceTree = "<group>"; };
+		556959B11D608377001CDCDB /* ABSwipeableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABSwipeableCell.m; sourceTree = "<group>"; };
 		6E5A9A861D5B908E006E0E3C /* ToDoList.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ToDoList.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6E5A9A8A1D5B908E006E0E3C /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		6E5A9A8C1D5B908E006E0E3C /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -48,6 +51,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		556959AC1D608309001CDCDB /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				556959B01D608377001CDCDB /* ABSwipeableCell.h */,
+				556959B11D608377001CDCDB /* ABSwipeableCell.m */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
 		6E5A9A7D1D5B908E006E0E3C = {
 			isa = PBXGroup;
 			children = (
@@ -67,6 +79,7 @@
 		6E5A9A881D5B908E006E0E3C /* ToDoList */ = {
 			isa = PBXGroup;
 			children = (
+				556959AC1D608309001CDCDB /* Cells */,
 				6E5A9AA71D5B981C006E0E3C /* ViewControllers */,
 				6E5A9AA01D5B90F4006E0E3C /* Model */,
 				6E5A9A8C1D5B908E006E0E3C /* AppDelegate.h */,
@@ -180,6 +193,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				556959B21D608377001CDCDB /* ABSwipeableCell.m in Sources */,
 				6E5A9A911D5B908E006E0E3C /* ViewController.m in Sources */,
 				6E5A9A8E1D5B908E006E0E3C /* AppDelegate.m in Sources */,
 				6E5A9AA31D5B9115006E0E3C /* ToDoItem.m in Sources */,
