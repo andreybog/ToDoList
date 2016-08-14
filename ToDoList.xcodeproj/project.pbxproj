@@ -7,7 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		556959B21D608377001CDCDB /* ABSwipeableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 556959B11D608377001CDCDB /* ABSwipeableCell.m */; };
+		556959DF1D610F8D001CDCDB /* exclamationBlack.png in Resources */ = {isa = PBXBuildFile; fileRef = 556959DA1D610F8D001CDCDB /* exclamationBlack.png */; };
+		556959E01D610F8D001CDCDB /* exclamationGreen.png in Resources */ = {isa = PBXBuildFile; fileRef = 556959DB1D610F8D001CDCDB /* exclamationGreen.png */; };
+		556959E11D610F8D001CDCDB /* exclamationGrey.png in Resources */ = {isa = PBXBuildFile; fileRef = 556959DC1D610F8D001CDCDB /* exclamationGrey.png */; };
+		556959E21D610F8D001CDCDB /* exclamationOrange.png in Resources */ = {isa = PBXBuildFile; fileRef = 556959DD1D610F8D001CDCDB /* exclamationOrange.png */; };
+		556959E31D610F8D001CDCDB /* exclamationRed.png in Resources */ = {isa = PBXBuildFile; fileRef = 556959DE1D610F8D001CDCDB /* exclamationRed.png */; };
+		556959E61D61113B001CDCDB /* ABToDoItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 556959E51D61113B001CDCDB /* ABToDoItemCell.m */; };
+		556959E81D611EA6001CDCDB /* blankImage.png in Resources */ = {isa = PBXBuildFile; fileRef = 556959E71D611EA6001CDCDB /* blankImage.png */; };
 		6E5A9A8B1D5B908E006E0E3C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E5A9A8A1D5B908E006E0E3C /* main.m */; };
 		6E5A9A8E1D5B908E006E0E3C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E5A9A8D1D5B908E006E0E3C /* AppDelegate.m */; };
 		6E5A9A911D5B908E006E0E3C /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E5A9A901D5B908E006E0E3C /* ViewController.m */; };
@@ -20,8 +26,14 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		556959B01D608377001CDCDB /* ABSwipeableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABSwipeableCell.h; sourceTree = "<group>"; };
-		556959B11D608377001CDCDB /* ABSwipeableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABSwipeableCell.m; sourceTree = "<group>"; };
+		556959DA1D610F8D001CDCDB /* exclamationBlack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = exclamationBlack.png; sourceTree = "<group>"; };
+		556959DB1D610F8D001CDCDB /* exclamationGreen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = exclamationGreen.png; sourceTree = "<group>"; };
+		556959DC1D610F8D001CDCDB /* exclamationGrey.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = exclamationGrey.png; sourceTree = "<group>"; };
+		556959DD1D610F8D001CDCDB /* exclamationOrange.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = exclamationOrange.png; sourceTree = "<group>"; };
+		556959DE1D610F8D001CDCDB /* exclamationRed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = exclamationRed.png; sourceTree = "<group>"; };
+		556959E41D61113B001CDCDB /* ABToDoItemCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABToDoItemCell.h; sourceTree = "<group>"; };
+		556959E51D61113B001CDCDB /* ABToDoItemCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABToDoItemCell.m; sourceTree = "<group>"; };
+		556959E71D611EA6001CDCDB /* blankImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blankImage.png; sourceTree = "<group>"; };
 		6E5A9A861D5B908E006E0E3C /* ToDoList.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ToDoList.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6E5A9A8A1D5B908E006E0E3C /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		6E5A9A8C1D5B908E006E0E3C /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -54,11 +66,25 @@
 		556959AC1D608309001CDCDB /* Cells */ = {
 			isa = PBXGroup;
 			children = (
-				556959B01D608377001CDCDB /* ABSwipeableCell.h */,
-				556959B11D608377001CDCDB /* ABSwipeableCell.m */,
+				556959E41D61113B001CDCDB /* ABToDoItemCell.h */,
+				556959E51D61113B001CDCDB /* ABToDoItemCell.m */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
+		};
+		556959D91D610F8D001CDCDB /* images */ = {
+			isa = PBXGroup;
+			children = (
+				556959E71D611EA6001CDCDB /* blankImage.png */,
+				556959DA1D610F8D001CDCDB /* exclamationBlack.png */,
+				556959DB1D610F8D001CDCDB /* exclamationGreen.png */,
+				556959DC1D610F8D001CDCDB /* exclamationGrey.png */,
+				556959DD1D610F8D001CDCDB /* exclamationOrange.png */,
+				556959DE1D610F8D001CDCDB /* exclamationRed.png */,
+			);
+			name = images;
+			path = ToDoList/images;
+			sourceTree = SOURCE_ROOT;
 		};
 		6E5A9A7D1D5B908E006E0E3C = {
 			isa = PBXGroup;
@@ -79,6 +105,7 @@
 		6E5A9A881D5B908E006E0E3C /* ToDoList */ = {
 			isa = PBXGroup;
 			children = (
+				556959D91D610F8D001CDCDB /* images */,
 				556959AC1D608309001CDCDB /* Cells */,
 				6E5A9AA71D5B981C006E0E3C /* ViewControllers */,
 				6E5A9AA01D5B90F4006E0E3C /* Model */,
@@ -181,7 +208,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				6E5A9A991D5B908E006E0E3C /* LaunchScreen.storyboard in Resources */,
+				556959DF1D610F8D001CDCDB /* exclamationBlack.png in Resources */,
+				556959E01D610F8D001CDCDB /* exclamationGreen.png in Resources */,
+				556959E81D611EA6001CDCDB /* blankImage.png in Resources */,
 				6E5A9A961D5B908E006E0E3C /* Assets.xcassets in Resources */,
+				556959E21D610F8D001CDCDB /* exclamationOrange.png in Resources */,
+				556959E31D610F8D001CDCDB /* exclamationRed.png in Resources */,
+				556959E11D610F8D001CDCDB /* exclamationGrey.png in Resources */,
 				6E5A9A941D5B908E006E0E3C /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -193,9 +226,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				556959B21D608377001CDCDB /* ABSwipeableCell.m in Sources */,
 				6E5A9A911D5B908E006E0E3C /* ViewController.m in Sources */,
 				6E5A9A8E1D5B908E006E0E3C /* AppDelegate.m in Sources */,
+				556959E61D61113B001CDCDB /* ABToDoItemCell.m in Sources */,
 				6E5A9AA31D5B9115006E0E3C /* ToDoItem.m in Sources */,
 				6E5A9AA61D5B925E006E0E3C /* ToDoItemsStore.m in Sources */,
 				6E5A9A8B1D5B908E006E0E3C /* main.m in Sources */,

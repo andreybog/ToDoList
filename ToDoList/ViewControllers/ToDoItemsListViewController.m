@@ -8,19 +8,13 @@
 
 #import "ToDoItemsListViewController.h"
 #import "ToDoItemsStore.h"
-#import "ABSwipeableCell.h"
+#import "ABToDoItemCell.h"
 
-
-@interface ToDoItemsListViewController () <UITableViewDataSource, UITableViewDelegate, ABSwipeableCellDelegate>
+@interface ToDoItemsListViewController () <UITableViewDataSource, UITableViewDelegate, ABToDoItemCellDelegate>
 
 @property (nonatomic, strong) id <ToDoItemStoreProtocol> itemsStore;
-@property (weak, nonatomic) IBOutlet UITextField *summaryTextField;
-@property (weak, nonatomic) IBOutlet UITextField *titleTextField;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UIButton *addItemButton;
-@property (weak, nonatomic) IBOutlet UISegmentedControl *priorityControl;
-
-@property (strong, nonatomic) NSMutableSet *cellsCurrentlyEditing;
 
 @end
 
@@ -32,14 +26,13 @@
     [super viewDidLoad];
     
     self.itemsStore = [[ToDoItemsStore alloc] init];
-    self.cellsCurrentlyEditing = [[NSMutableSet alloc] init];
     
-    for ( int i = 0; i < 6; i++ ) {
-    [self addItemWithTitle:@"Buy" summary:@"When cost is low" priority:ToDoItemPriorityLow toItemsStore:self.itemsStore];
-    [self addItemWithTitle:@"Sell" summary:@"When cost is high" priority:ToDoItemPriorityDefault toItemsStore:self.itemsStore];
-    [self addItemWithTitle:@"Buy pickles" summary:@"12" priority:ToDoItemPriorityHigh toItemsStore:self.itemsStore];
-    [self addItemWithTitle:@"Go to lecture" summary:@"01.12.2016" priority:ToDoItemPriorityDefault toItemsStore:self.itemsStore];
-    [self addItemWithTitle:@"Do hometask or delegate it to smbd!!!" summary:@"Due Fri" priority:ToDoItemPriorityUrgent toItemsStore:self.itemsStore];
+    for ( int i = 0; i < 3; i++ ) {
+        [self addItemWithTitle:@"Buy" summary:@"When cost is low" priority:ToDoItemPriorityLow toItemsStore:self.itemsStore];
+        [self addItemWithTitle:@"Sell" summary:@"When cost is high" priority:ToDoItemPriorityDefault toItemsStore:self.itemsStore];
+        [self addItemWithTitle:@"Buy pickles" summary:@"12" priority:ToDoItemPriorityHigh toItemsStore:self.itemsStore];
+        [self addItemWithTitle:@"Go to lecture" summary:@"01.12.2016" priority:ToDoItemPriorityDefault toItemsStore:self.itemsStore];
+        [self addItemWithTitle:@"Do hometask or delegate it to smbd!!!" summary:@"Due Fri" priority:ToDoItemPriorityUrgent toItemsStore:self.itemsStore];
     }
     
 }
@@ -48,21 +41,17 @@
 
 - (IBAction)actionDidTouchAddButton:(UIButton *)sender {
     
-    NSString *title = [self.titleTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    [self addItemWithTitle:@"" summary:@"" priority:ToDoItemPriorityDefault toItemsStore:self.itemsStore];
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
     
-    if ( [title length] > 0 ) {
-        
-        NSString *summary = [self.summaryTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-        ToDoItemPriority priority = [self.priorityControl selectedSegmentIndex];
-        
-        [self addItemWithTitle:title summary:summary priority:priority toItemsStore:self.itemsStore];
-        
-         NSIndexPath *newElementIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
-        
-        [self.tableView insertRowsAtIndexPaths: @[ newElementIndexPath ] withRowAnimation:UITableViewRowAnimationLeft];
-        
-        [self resetAddItemUI];
-    }
+    [self.tableView insertRowsAtIndexPaths: @[ indexPath ] withRowAnimation:UITableViewRowAnimationLeft];
+    
+    ABToDoItemCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
+    cell.delegate = self;
+    
+    [cell.titleTextField becomeFirstResponder];
+    
+    [self configureButton:sender asEnabled:NO];
 }
 
 - (IBAction)actionTitleFieldEditingChanged:(UITextField *)sender {
@@ -88,59 +77,33 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
- 
+    
+    static NSString *identifier = @"ABToDoItemCell";
+    
     ToDoItem  *item = [self.itemsStore.items objectAtIndex:indexPath.row];
-    
-    /*
-//    static NSString *identifier = @"ABSwipeableCell";
-//    ABSwipeableCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-    
-    
-     cell.delegate = self;
-     cell.itemText = item.title;
-     cell.accessoryType = item.isDone ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
-     cell.backgroundColor = item.isDone ? [UIColor colorWithWhite:0.8 alpha:1.0] : [UIColor whiteColor];
-     */
-    
-    static NSString *identifier = @"Cell";
-    
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-    
-    
-    if ( ! cell ) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:identifier];
-    }
-    
+   
+    ABToDoItemCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
     
     NSMutableAttributedString *title = [[NSMutableAttributedString alloc] initWithString:item.title];
-    
+    cell.delegate = self;
     
     if ( item.isDone ) {
         cell.backgroundColor = [UIColor colorWithWhite:0.8 alpha:1.0];
-        [title removeAttribute:NSStrikethroughStyleAttributeName range:NSMakeRange(0, [title length])];
+        cell.titleTextField.textColor = [UIColor grayColor];
+        
+        [title addAttribute:NSStrikethroughStyleAttributeName value:@2 range:NSMakeRange(0, [title length])];
+        [cell setEnabled:NO];
+        [cell setPriorityButtonImage:[UIImage imageNamed:@"blankImage"]];
+        
     } else {
         cell.backgroundColor = [UIColor whiteColor];
-        [title addAttribute:NSStrikethroughStyleAttributeName
-                      value:@2
-                      range:NSMakeRange(0, [title length])];
+        [title removeAttribute:NSStrikethroughStyleAttributeName range:NSMakeRange(0, [title length])];
+        cell.titleTextField.textColor = [self colorForItemPriority:item.priority];
+        [cell setEnabled:YES];
+        [cell setPriorityButtonImage:[UIImage imageNamed:[self imageNameForItemPriority:item.priority]]];
     }
     
-    cell.textLabel.textColor = [self colorForItemPriority:item.priority];
-    cell.detailTextLabel.text = item.summary;
-    cell.detailTextLabel.textColor = [UIColor grayColor];
-    
-    
-//    cell.accessoryType = item.isDone ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
-    
-    
-    
-#ifdef DEBUG
-//    NSLog(@"Cell recursive description:\n\n%@\n\n", [cell performSelector:@selector(recursiveDescription)]);
-#endif
-    
-//    if ( [self.cellsCurrentlyEditing containsObject:indexPath] ) {
-//        [cell openCell];
-//    }
+    cell.titleTextField.attributedText = title;
     
     return cell;
 }
@@ -150,13 +113,7 @@
     if ( editingStyle == UITableViewCellEditingStyleDelete ) {
         
         ToDoItem *item = [self.itemsStore.items objectAtIndex:indexPath.row];
-      
-        UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-        
-#ifdef DEBUG
-//        NSLog(@"Cell recursive description:\n\n%@\n\n", [cell performSelector:@selector(recursiveDescription)]);
-#endif
-        
+ 
         [self.itemsStore removeItem:item];
 
         [tableView deleteRowsAtIndexPaths:@[ indexPath ] withRowAnimation:UITableViewRowAnimationAutomatic];
@@ -166,7 +123,7 @@
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    return NO;
+    return YES;
 }
 
 #pragma mark - UITableViewDelegate
@@ -175,33 +132,38 @@
     
     ToDoItem *item = [self.itemsStore.items objectAtIndex:indexPath.row];
     
-    item.done = !item.isDone;
+    if ( [item.title length] != 0 ) {
     
-    UITableViewRowAnimation rowAnimation = UITableViewRowAnimationNone;
-    NSIndexPath *newIndexPath = nil;
-    
-    [tableView reloadRowsAtIndexPaths: @[ indexPath ] withRowAnimation:rowAnimation];
-    
-    if ( item.isDone ) {
+        item.done = !item.isDone;
         
-        newIndexPath = [NSIndexPath indexPathForRow:[self.itemsStore itemsCount]-1 inSection:0];
-        rowAnimation = UITableViewRowAnimationNone;
+        UITableViewRowAnimation rowAnimation = UITableViewRowAnimationNone;
+        NSIndexPath *newIndexPath = nil;
         
-    } else {
+        [tableView reloadRowsAtIndexPaths: @[ indexPath ] withRowAnimation:rowAnimation];
         
-        rowAnimation = UITableViewRowAnimationAutomatic;
-        newIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+        if ( item.isDone ) {
+            
+            newIndexPath = [NSIndexPath indexPathForRow:[self.itemsStore itemsCount]-1 inSection:0];
+            rowAnimation = UITableViewRowAnimationNone;
+            
+        } else {
+            
+            rowAnimation = UITableViewRowAnimationAutomatic;
+            newIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+        }
+        
+        [tableView moveRowAtIndexPath:indexPath toIndexPath:newIndexPath];
+        
+        [self.itemsStore removeItem:item];
+        [self.itemsStore insertItem:item atIndex:newIndexPath.row];
     }
+    [self.tableView endEditing:YES];
     
-    [tableView moveRowAtIndexPath:indexPath toIndexPath:newIndexPath];
-    
-    [self.itemsStore removeItem:item];
-    [self.itemsStore insertItem:item atIndex:newIndexPath.row];
 }
 
 #pragma mark - Help functions
 
-- (void) addItemWithTitle:(NSString *) title summary:(NSString *) summary
+- (ToDoItem *) addItemWithTitle:(NSString *) title summary:(NSString *) summary
                  priority:(ToDoItemPriority) priority toItemsStore:(ToDoItemsStore *) itemsStore {
     
     ToDoItem *item = [[ToDoItem alloc] init];
@@ -210,6 +172,8 @@
     item.priority = priority;
     
     [itemsStore insertItem:item atIndex:0];
+    
+    return item;
 }
 
 - (void) configureButton:(UIButton *) button asEnabled:(BOOL) enabled {
@@ -225,7 +189,7 @@
     
     switch (priority) {
         case ToDoItemPriorityLow:
-            return [UIColor grayColor];
+            return [UIColor lightGrayColor];
         case ToDoItemPriorityDefault:
             return [UIColor blackColor];
         case ToDoItemPriorityHigh:
@@ -235,35 +199,62 @@
     }
 }
 
-- (void) resetAddItemUI {
+- (NSString *) imageNameForItemPriority:(ToDoItemPriority) priority {
     
-    self.titleTextField.text = nil;
-    self.summaryTextField.text = nil;
+    switch (priority) {
+        case ToDoItemPriorityLow:
+            return @"exclamationGrey";
+        case ToDoItemPriorityDefault:
+            return @"exclamationBlack";
+        case ToDoItemPriorityHigh:
+            return @"exclamationOrange";
+        case ToDoItemPriorityUrgent:
+            return @"exclamationRed";
+    }
+}
+
+- (void) increasePriorityInItem:(ToDoItem *) item {
     
-    [self.view endEditing:YES];
-    [self configureButton:self.addItemButton asEnabled:NO];
-    [self.priorityControl setSelectedSegmentIndex:ToDoItemPriorityDefault];
+    if ( item.priority == ToDoItemPriorityUrgent ) {
+        item.priority = ToDoItemPriorityLow;
+    } else {
+        item.priority += 1;
+    }
 }
 
-#pragma mark - ABSwipeableCellDelegate
-
-- (void) buttonOneActionForItemText:(NSString *) itemText {
-    NSLog(@"In delegate, clicke button one for %@", itemText);
-}
-
-- (void) buttonTwoActionForItemText:(NSString *) itemText {
-    NSLog(@"In delegate, clicke button two for %@", itemText);
-}
-
-- (void) cellDidOpen:(UITableViewCell *) cell {
-    NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
-    [self.cellsCurrentlyEditing addObject:indexPath];
-}
-
-- (void) cellDidClose:(UITableViewCell *) cell {
+- (void) toDoItemCellDidPressPriorityButton:(ABToDoItemCell *) cell {
     
     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
-    [self.cellsCurrentlyEditing removeObject:indexPath];
+    ToDoItem *item = [self.itemsStore.items objectAtIndex:indexPath.row];
+    
+    if ( [item.title length] != 0 ) {
+    
+        [self increasePriorityInItem:item];
+        
+        [self.tableView reloadRowsAtIndexPaths:@[ indexPath ] withRowAnimation:UITableViewRowAnimationAutomatic];
+        [self.tableView endEditing:YES];
+    }
+    
+}
+
+- (void) toDoItemCell:(ABToDoItemCell *)cell DidChangeTitle:(NSString *) title {
+    
+    NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
+    ToDoItem *item = [self.itemsStore.items objectAtIndex:indexPath.row];
+    NSString *newTitle = [title stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    
+    if ( [newTitle length] == 0 ) {
+        
+        [self.itemsStore removeItem:item];
+        [self.tableView deleteRowsAtIndexPaths:@[ indexPath ] withRowAnimation:UITableViewRowAnimationRight];
+        
+    } else {
+        item.title = newTitle;
+        
+        [self.tableView reloadRowsAtIndexPaths:@[ indexPath ] withRowAnimation:UITableViewRowAnimationAutomatic];
+    }
+    
+    [self configureButton:self.addItemButton asEnabled:YES];
 }
 
 @end
