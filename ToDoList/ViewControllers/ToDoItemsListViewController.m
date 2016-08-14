@@ -157,8 +157,8 @@
         [self.itemsStore removeItem:item];
         [self.itemsStore insertItem:item atIndex:newIndexPath.row];
     }
-    [self.tableView endEditing:YES];
     
+    [self.tableView endEditing:YES];
 }
 
 #pragma mark - Help functions
