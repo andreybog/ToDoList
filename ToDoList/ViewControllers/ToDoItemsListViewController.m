@@ -245,8 +245,6 @@
     } else {
         item.title = newTitle;
     }
-    
-    
 }
 
 - (void) toDoItemCell:(ABToDoItemCell *)cell didChangeSummary:(NSString *) summary {
@@ -261,7 +259,7 @@
      NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
     
     [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
-//    self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 600, 0);
+    self.tableView.contentInset = UIEdgeInsetsMake(0, 0, CGRectGetHeight(self.tableView.bounds)-self.tableView.rowHeight/2, 0);
     
     [self configureButton:self.addItemButton asEnabled:NO];
 }
@@ -273,7 +271,9 @@
         [self.tableView reloadRowsAtIndexPaths:@[ indexPath ] withRowAnimation:UITableViewRowAnimationAutomatic];
     }
     
-    self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
+    [UIView animateWithDuration:0.2 animations:^{
+            self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
+    }];
     
     [self configureButton:self.addItemButton asEnabled:YES];
 }
