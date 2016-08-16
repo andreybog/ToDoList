@@ -14,6 +14,7 @@
 @interface ABToDoItemCell : UITableViewCell
 
 @property (weak, nonatomic) IBOutlet UITextField *titleTextField;
+@property (weak, nonatomic) IBOutlet UITextField *summaryTextField;
 
 @property (weak, nonatomic) id <ABToDoItemCellDelegate> delegate;
 
@@ -26,6 +27,9 @@
 @protocol ABToDoItemCellDelegate <NSObject>
 
 - (void) toDoItemCellDidPressPriorityButton:(ABToDoItemCell *) cell;
-- (void) toDoItemCell:(ABToDoItemCell *)cell DidChangeTitle:(NSString *) title;
+- (void) toDoItemCell:(ABToDoItemCell *)cell didChangeTitle:(NSString *) title;
+- (void) toDoItemCell:(ABToDoItemCell *)cell didChangeSummary:(NSString *) summary;
+- (void) toDoItemCellDidEndEditing:(ABToDoItemCell *)cell;
+- (void) toDoItemCellDidBeginEditing:(ABToDoItemCell *)cell;
 
 @end
