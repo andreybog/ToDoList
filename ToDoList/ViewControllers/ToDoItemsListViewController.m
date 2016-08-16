@@ -246,7 +246,7 @@
         item.title = newTitle;
     }
     
-    [self configureButton:self.addItemButton asEnabled:YES];
+    
 }
 
 - (void) toDoItemCell:(ABToDoItemCell *)cell didChangeSummary:(NSString *) summary {
@@ -258,10 +258,12 @@
 }
 
 - (void) toDoItemCellDidBeginEditing:(ABToDoItemCell *)cell {
-//    NSLog(@"toDoItemCellDidBeginEditing");
-//     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
+     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
     
-//    [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+    [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+//    self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 600, 0);
+    
+    [self configureButton:self.addItemButton asEnabled:NO];
 }
 
 - (void) toDoItemCellDidEndEditing:(ABToDoItemCell *)cell {
@@ -270,6 +272,10 @@
     if ( indexPath ) {
         [self.tableView reloadRowsAtIndexPaths:@[ indexPath ] withRowAnimation:UITableViewRowAnimationAutomatic];
     }
+    
+    self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
+    
+    [self configureButton:self.addItemButton asEnabled:YES];
 }
 
 @end
