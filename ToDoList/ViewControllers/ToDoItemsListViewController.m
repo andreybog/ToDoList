@@ -32,7 +32,7 @@
         [self addItemWithTitle:@"Sell" summary:@"When cost is high" priority:ToDoItemPriorityDefault toItemsStore:self.itemsStore];
         [self addItemWithTitle:@"Buy pickles" summary:@"12" priority:ToDoItemPriorityHigh toItemsStore:self.itemsStore];
         [self addItemWithTitle:@"Go to lecture" summary:@"01.12.2016" priority:ToDoItemPriorityDefault toItemsStore:self.itemsStore];
-        [self addItemWithTitle:@"Do hometask or delegate it to smbd!!!" summary:@"Due Fri" priority:ToDoItemPriorityUrgent toItemsStore:self.itemsStore];
+        [self addItemWithTitle:@"Do hometask!" summary:@"Due Fri" priority:ToDoItemPriorityUrgent toItemsStore:self.itemsStore];
     }
     
 }
@@ -58,7 +58,7 @@
     
     NSString *title = [sender.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     
-    if ( [title length] > 0 ) {
+    if ( title.length ) {
         if ( ! self.addItemButton.isEnabled ) {
             [self configureButton:self.addItemButton asEnabled:YES];
         }
@@ -77,14 +77,12 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
     static NSString *identifier = @"ABToDoItemCell";
     
     ToDoItem  *item = [self.itemsStore.items objectAtIndex:indexPath.row];
-   
     ABToDoItemCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-    
     NSMutableAttributedString *title = [[NSMutableAttributedString alloc] initWithString:item.title];
+    
     cell.delegate = self;
     
     if ( item.isDone ) {
@@ -104,6 +102,7 @@
     }
     
     cell.titleTextField.attributedText = title;
+    cell.summaryTextField.text = item.summary;
     
     return cell;
 }
@@ -129,11 +128,9 @@
 #pragma mark - UITableViewDelegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    
     ToDoItem *item = [self.itemsStore.items objectAtIndex:indexPath.row];
     
-    if ( [item.title length] != 0 ) {
-    
+    if ( item.title.length ) {
         item.done = !item.isDone;
         
         UITableViewRowAnimation rowAnimation = UITableViewRowAnimationNone;
@@ -142,12 +139,9 @@
         [tableView reloadRowsAtIndexPaths: @[ indexPath ] withRowAnimation:rowAnimation];
         
         if ( item.isDone ) {
-            
             newIndexPath = [NSIndexPath indexPathForRow:[self.itemsStore itemsCount]-1 inSection:0];
             rowAnimation = UITableViewRowAnimationNone;
-            
         } else {
-            
             rowAnimation = UITableViewRowAnimationAutomatic;
             newIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
         }
@@ -158,6 +152,13 @@
         [self.itemsStore insertItem:item atIndex:newIndexPath.row];
     }
     
+    [self.tableView endEditing:YES];
+}
+
+#pragma mark - UIScrollView
+
+
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
     [self.tableView endEditing:YES];
 }
 
@@ -177,7 +178,6 @@
 }
 
 - (void) configureButton:(UIButton *) button asEnabled:(BOOL) enabled {
-    
     UIColor *enableColor = [UIColor colorWithRed:48/255.0 green:131/255.0 blue:251/255.0 alpha:1.0];
     UIColor *backgroundColor = enabled ? enableColor : [UIColor lightGrayColor];
     
@@ -185,8 +185,7 @@
     button.backgroundColor = backgroundColor;
 }
 
-- (UIColor *) colorForItemPriority:(ToDoItemPriority) priority {
-    
+- (UIColor *) colorForItemPriority:(ToDoItemPriority) priority {    
     switch (priority) {
         case ToDoItemPriorityLow:
             return [UIColor lightGrayColor];
@@ -200,7 +199,6 @@
 }
 
 - (NSString *) imageNameForItemPriority:(ToDoItemPriority) priority {
-    
     switch (priority) {
         case ToDoItemPriorityLow:
             return @"exclamationGrey";
@@ -214,47 +212,64 @@
 }
 
 - (void) increasePriorityInItem:(ToDoItem *) item {
-    
     if ( item.priority == ToDoItemPriorityUrgent ) {
         item.priority = ToDoItemPriorityLow;
     } else {
-        item.priority += 1;
+        item.priority++;
     }
 }
 
+
+#pragma mark - ABToDoItemCellDelegate
+
 - (void) toDoItemCellDidPressPriorityButton:(ABToDoItemCell *) cell {
-    
     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
     ToDoItem *item = [self.itemsStore.items objectAtIndex:indexPath.row];
     
     if ( [item.title length] != 0 ) {
-    
         [self increasePriorityInItem:item];
-        
         [self.tableView reloadRowsAtIndexPaths:@[ indexPath ] withRowAnimation:UITableViewRowAnimationAutomatic];
         [self.tableView endEditing:YES];
     }
     
 }
 
-- (void) toDoItemCell:(ABToDoItemCell *)cell DidChangeTitle:(NSString *) title {
-    
+- (void) toDoItemCell:(ABToDoItemCell *)cell didChangeTitle:(NSString *) title {
     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
     ToDoItem *item = [self.itemsStore.items objectAtIndex:indexPath.row];
     NSString *newTitle = [title stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     
-    if ( [newTitle length] == 0 ) {
-        
+    if ( ! newTitle.length ) {
         [self.itemsStore removeItem:item];
         [self.tableView deleteRowsAtIndexPaths:@[ indexPath ] withRowAnimation:UITableViewRowAnimationRight];
-        
     } else {
         item.title = newTitle;
-        
-        [self.tableView reloadRowsAtIndexPaths:@[ indexPath ] withRowAnimation:UITableViewRowAnimationAutomatic];
     }
     
     [self configureButton:self.addItemButton asEnabled:YES];
+}
+
+- (void) toDoItemCell:(ABToDoItemCell *)cell didChangeSummary:(NSString *) summary {
+    NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
+    ToDoItem *item = [self.itemsStore.items objectAtIndex:indexPath.row];
+    NSString *newSummary = [summary stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    
+    item.summary = newSummary;
+}
+
+- (void) toDoItemCellDidBeginEditing:(ABToDoItemCell *)cell {
+//    NSLog(@"toDoItemCellDidBeginEditing");
+//     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
+    
+//    [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+}
+
+- (void) toDoItemCellDidEndEditing:(ABToDoItemCell *)cell {
+    NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
+    
+    if ( indexPath ) {
+        [self.tableView reloadRowsAtIndexPaths:@[ indexPath ] withRowAnimation:UITableViewRowAnimationAutomatic];
+    }
 }
 
 @end
