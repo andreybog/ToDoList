@@ -15,6 +15,7 @@
 @property (nonatomic, strong) id <ToDoItemStoreProtocol> itemsStore;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UIButton *addItemButton;
+@property (assign, getter=isTableCellEditing) BOOL tableCellEditing;
 
 @end
 
@@ -34,13 +35,11 @@
         [self addItemWithTitle:@"Go to lecture" summary:@"01.12.2016" priority:ToDoItemPriorityDefault toItemsStore:self.itemsStore];
         [self addItemWithTitle:@"Do hometask!" summary:@"Due Fri" priority:ToDoItemPriorityUrgent toItemsStore:self.itemsStore];
     }
-    
 }
 
 #pragma mark - Actions
 
 - (IBAction)actionDidTouchAddButton:(UIButton *)sender {
-    
     [self addItemWithTitle:@"" summary:@"" priority:ToDoItemPriorityDefault toItemsStore:self.itemsStore];
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
     
@@ -50,29 +49,12 @@
     cell.delegate = self;
     
     [cell.titleTextField becomeFirstResponder];
-    
     [self configureButton:sender asEnabled:NO];
 }
-
-- (IBAction)actionTitleFieldEditingChanged:(UITextField *)sender {
-    
-    NSString *title = [sender.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-    
-    if ( title.length ) {
-        if ( ! self.addItemButton.isEnabled ) {
-            [self configureButton:self.addItemButton asEnabled:YES];
-        }
-    } else {
-        [self configureButton:self.addItemButton asEnabled:NO];
-    }
-    
-}
-
 
 #pragma mark - UITableViewDataSource
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    
     return [self.itemsStore itemsCount];
 }
 
@@ -110,11 +92,9 @@
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     
     if ( editingStyle == UITableViewCellEditingStyleDelete ) {
-        
         ToDoItem *item = [self.itemsStore.items objectAtIndex:indexPath.row];
  
         [self.itemsStore removeItem:item];
-
         [tableView deleteRowsAtIndexPaths:@[ indexPath ] withRowAnimation:UITableViewRowAnimationAutomatic];
     } else {
         NSLog(@"Unhandled editing style: %ld", editingStyle);
@@ -242,6 +222,7 @@
     if ( ! newTitle.length ) {
         [self.itemsStore removeItem:item];
         [self.tableView deleteRowsAtIndexPaths:@[ indexPath ] withRowAnimation:UITableViewRowAnimationRight];
+        [self.tableView endEditing:YES];
     } else {
         item.title = newTitle;
     }
@@ -256,12 +237,19 @@
 }
 
 - (void) toDoItemCellDidBeginEditing:(ABToDoItemCell *)cell {
+    if ( self.isTableCellEditing ) {
+        self.tableCellEditing = NO;
+        
+        return;
+    }
+    
      NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
     
     [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
     self.tableView.contentInset = UIEdgeInsetsMake(0, 0, CGRectGetHeight(self.tableView.bounds)-self.tableView.rowHeight/2, 0);
     
     [self configureButton:self.addItemButton asEnabled:NO];
+    self.tableCellEditing = YES;
 }
 
 - (void) toDoItemCellDidEndEditing:(ABToDoItemCell *)cell {
@@ -272,10 +260,12 @@
     }
     
     [UIView animateWithDuration:0.2 animations:^{
+        [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
             self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
     }];
     
     [self configureButton:self.addItemButton asEnabled:YES];
+    self.tableCellEditing = NO;
 }
 
 @end
